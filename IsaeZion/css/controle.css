@@ -1,0 +1,66 @@
+body{
+  font-family: 'Lobster', cursive;
+ background-image: url("img/bambu.jpg");
+}
+
+h2{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  padding: 20px;
+  
+}
+h2:hover{
+  border-bottom: 1px solid rgba(0, 255, 149, 0.74);
+}
+
+
+.login{
+ float: none;
+text-align: center;
+  height: auto;
+  width: 300px;
+  padding: 10px;
+  border-radius: 10px;  
+}
+
+label{
+  
+  font-weight: bold;
+}
+
+
+button{
+  width: 90px;
+}
+.center{
+  float: none;
+  text-align: center;
+}
+label{
+  font-family: 'Lobster', cursive;
+}
+
+
+h1{
+  color: black;
+}
+
+.card-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+nav{
+    font-family: 'Lobster', cursive;
+}
+a{
+  color: #e6ee9c;
+  
+}
+a:hover{
+  color: #827717;
+}
+a.navbar-brand{
+  font-size: 25px;
+}
