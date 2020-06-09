@@ -9,28 +9,22 @@ function salvarUsuario(){
   const telefone = document.getElementById("telefone").value;
   const email = document.getElementById("email").value;
   const cidade = document.getElementById("cidade").value;
-  const senha = document.getElementById("senha").value;
+  
+  let id = usuarios.length;
 
-  const usuario = {id: Date.now(),
-     nome, endereco, telefone, email, cidade,senha};
-     usuarios.push(usuario); 
-  
-  window.localStorage.setItem("usuarios",JSON.stringify(usuarios));   
-  
- 
-  
+  const usuario = {id: id++,nome, endereco, telefone, email, cidade};
+  usuarios.push(usuario);
   Swal.fire({
     
     icon: 'success',
-    title: 'Usuário cadastrado com sucesso!!!',
+    title: 'Usuário cadastrado com sucesso!',
     showConfirmButton: false,
     timer: 1500
   });
   listarUsuarios();
-  limparInputs();
-  
 
- }
+}
+
 function cadUsuario(){
   const nome = document.getElementById("nome").value;
   const endereco = document.getElementById("endereco").value;
@@ -85,8 +79,7 @@ function cadUsuario(){
     confirmButtonText: 'Sim'
   }).then((result) => {
     if (result.value) {
-      const usuarioIndex = usuarios.findIndex(usuario => usuario.id == id);
-      usuarios.splice(usuarioIndex,1);
+      let usuarioIndex = usuarios.findIndex(usuario => usuario.id == id);
       if(usuarioIndex >= 0){
         usuarios.splice(usuarioIndex,1);
         if(usuarios.length > 0){
@@ -97,14 +90,13 @@ function cadUsuario(){
         }
       }
       Swal.fire(
-        'Usuário excluído com sucesso',
+        'Usuário excluído!',
         '',
         'success'
       )
     }
   });
-      
- }
+}
 
  function editarUsuario(id){
    for(let i =0; i< usuarios.length; i++){
@@ -143,11 +135,8 @@ function cadUsuario(){
 
  function listarUsuarios(){
   let linha = "";
-  let usuariosGravado = JSON.parse(window.localStorage.getItem("usuarios"));
-  if(usuariosGravado){
-  usuariosGravado.forEach(usuario => {
+  usuarios.forEach(usuario => {
     row = document.getElementById("tbody");
-    if(row){
      linha += "<tr>"+
               "<td id='tdid'>"+usuario.id +"</td>"+
               "<td id='tdnome'>"+usuario.nome +"</td>"+
@@ -159,11 +148,10 @@ function cadUsuario(){
               "<button class='btn btn-outline-danger'onclick='apagarUsuario("+usuario.id+")'><i class='fa fa-trash'></i></button></td>"
             +"</tr>";
     row.innerHTML = linha;        
-    }
+
   
   
   });
-}
  }
 
  function limparInputs(){
@@ -228,9 +216,41 @@ function cadUsuario(){
      }
    }
 
- listarUsuarios();
-
-
+   function Main() 
+   {
+       if (verificaDados() == 1)
+       {
+           return Swal.fire({
+               icon: 'error',
+               title: 'Preencha todos os campos',
+           });
+       }
+   
+       const inputs = document.getElementsByTagName("input");
+       if (inputs[0].value == inputs[1].value) {
+           const idUsuario = pegarIdUsuario();
+           const result = alterarSenha(idUsuario, inputs[1].value);
+           if(result == 0) {
+               Swal.fire({
+                   icon: 'success',
+                   title: 'Senha alterada com sucesso',
+                   showConfirmButton: true,
+               }).then(() => {
+                   window.location = './perfil.html';
+               });
+           }else {
+               return Swal.fire({
+                   icon: 'error',
+                   title: 'Não foi possível trocar a senha',
+               }); 
+           }
+       }else{
+           return Swal.fire({
+               icon: 'error',
+               title: 'Senhas não conferem',
+           });
+       }
+   }
 
 
   
