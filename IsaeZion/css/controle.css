@@ -10,9 +10,6 @@ h2{
   padding: 20px;
   
 }
-h2:hover{
-  border-bottom: 1px solid rgba(0, 255, 149, 0.74);
-}
 
 
 .login{
@@ -82,4 +79,11 @@ a.navbar-brand{
   height: 60%;
   border-radius: 0px 0px 25px 25px;
   border: solid #8bc34a;
+}
+
+.conteudo{
+  background-color: #8bc34a;
+  margin-top: 50px;
+  border-radius: 25px;
+  border: 2px #827717 solid;
 }

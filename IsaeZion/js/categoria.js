@@ -1,48 +1,56 @@
-const categorias = [];
-
-function salvarCategoria(){
-  const nome = document.getElementById("nome").value;
-  
-  let id = categorias.length;
-
-  const categoria = {id: id++,nome,};
-  categorias.push(categoria);
-
-  window.localStorage.setItem("categorias",JSON.stringify(categorias));   
-
-  Swal.fire({
-    
-    icon: 'success',
-    title: 'Categoria cadastrada com sucesso!',
-    showConfirmButton: false,
-    timer: 1500
-  });
-  listarCategoria();
+function editarCategoria(id){
+    const categorias = JSON.parse(localStorage.getItem("categorias"));
+    Swal.mixin({
+        input: 'text',
+        confirmButtonText: 'Confirmar',
+        showCancelButton: true,
+      }).queue([
+        {
+            title: 'Alteração',
+            text: 'Insira o nome novo:',
+        }
+      ]).then((result) => {
+        categorias[categorias.findIndex(i => i.id ==  id)].nome = result.value[0]
+        localStorage.setItem("categorias", JSON.stringify(categorias))
+        location.reload();
+      })
 }
 
-function listarCategoria(){
-    let linha = "";
-    categorias.forEach(categoria => {
-      row = document.getElementById("tbody");
-       linha += "<tr>"+
-                "<td id='tdid'>"+categoria.id +"</td>"+
-                "<td id='tdnome'>"+categoria.nome +"</td>"+
-                "<td id='tdacoes'><button class='btn btn-outline-danger'onclick='apagarUsuario("+categoria.id+")'><i class='fa fa-trash'></i></button></td>"
-              +"</tr>";
-      row.innerHTML = linha;        
-    });
-   }
+function apagarCategoria(id){
+    const categorias = JSON.parse(localStorage.getItem("categorias"));
+    categorias.splice(categorias.findIndex(i => i.id == id),1)
+    localStorage.setItem("categorias", JSON.stringify(categorias))
+    location.reload();
+}
 
-   var selectValues = {
-    "1": "test 1",
-    "2": "test 2"
-  };
-  var $mySelect = $('#mySelect');
-  //
-  $.each(selectValues, function(key, value) {
-    var $option = $("<option/>", {
-      value: key,
-      text: value
+function listar(){
+    let linha = "";
+    const categorias = JSON.parse(localStorage.getItem("categorias"));
+    categorias.forEach(element => {
+        linha += "<tr>" +
+            "<th>" + element.id + "</th>"+
+            "<th>" + element.nome + "</th>"+
+            "<th>" + "<button onclick='editarCategoria(" + element.id + ")' class='btn btn-outline-success'>" + "<i class='fa fa-edit'></i>" + "</button>" + "</th>"+
+            "<th>" + "<button onclick='apagarCategoria(" + element.id + ")' class='btn btn-outline-danger'>"+ "<i class='fa fa-trash'></i>" + "</button>" + "</th>"
+        document.getElementById("tbody").innerHTML = linha;
     });
-    $mySelect.append($option);
-  });
+}
+
+function cadastrarCategoria()
+{
+    const input = document.getElementById("nome").value
+    if(input && input.replace(/\s/g, ''))
+    {
+        let nome = input
+        const categorias = JSON.parse(localStorage.getItem("categorias"));
+        const categoria = {
+            id: (Math.random() * 10000).toFixed(),
+            nome: nome
+        }
+        categorias.push(categoria)
+        localStorage.setItem("categorias", JSON.stringify(categorias))
+    }else{
+        alert("Valor Inválido!")
+    }
+    location.reload();
+}
