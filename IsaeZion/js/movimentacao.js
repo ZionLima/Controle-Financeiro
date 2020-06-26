@@ -1,6 +1,10 @@
 
+let receitas = 0
+let despesas = 0
+let saldo = 0
 
 function cadastrarMovimento(){
+  debugger
   const conta = document.getElementById("conta").value;
   const valor = document.getElementById("valor").value;
 
@@ -12,10 +16,16 @@ function cadastrarMovimento(){
     valor: valor,
 }
 
+receitas += parseFloat(valor)
+saldo = (receitas - despesas)
 
 movimentos.push(movimento);
 localStorage.setItem("movimentos", JSON.stringify(movimentos))
-location.reload()
+
+document.getElementById('receitas').innerHTML = `R$${receitas}`
+document.getElementById('despesas').innerHTML = `R$${despesas}`
+document.getElementById('saldo').innerHTML = `R$${saldo}`
+
 
   listar();
 }
@@ -42,16 +52,13 @@ function listar(){
         linha += "<option value=" + element.nome + ">" + element.nome + "</option>"
         document.getElementById("conta").innerHTML = linha
     });
-   }
+
+
+  }
 
 function apagarMovimento(id){
   const movimentos = JSON.parse(localStorage.getItem("movimentos"));
   movimentos.splice(movimentos.findIndex(i => i.id == id),1)
   localStorage.setItem("movimentos", JSON.stringify(movimentos))
   location.reload();
-}
-
-function converter(valor){
-  var numero = parseFloat(valor).toLocaleString('pt-BR',{ style: 'currency', currency: 'BRL' });
-  document.getElementById('valor').value = numero;
 }
